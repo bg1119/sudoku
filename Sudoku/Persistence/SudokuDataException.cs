@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ELTE.Windows.Sudoku.Persistence
+namespace ELTE.Forms.Sudoku.Persistence
 {
     /// <summary>
     /// Sudoku adatelérés kivétel típusa.

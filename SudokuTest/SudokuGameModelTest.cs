@@ -1,8 +1,8 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ELTE.Windows.Sudoku.Model;
+using ELTE.Forms.Sudoku.Model;
 
-namespace ELTE.Windows.Sudoku.Test
+namespace ELTE.Forms.Sudoku.Test
 {
     [TestClass]
     public class SudokuGameModelTest
@@ -18,6 +18,7 @@ namespace ELTE.Windows.Sudoku.Test
             _model.GameAdvanced += new EventHandler<SudokuEventArgs>(Model_GameAdvanced);
             _model.GameOver += new EventHandler<SudokuEventArgs>(Model_GameOver);
         }
+
 
         [TestMethod]
         public void SudokuGameModelNewGameMediumTest()

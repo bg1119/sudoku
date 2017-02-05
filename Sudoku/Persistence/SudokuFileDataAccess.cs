@@ -2,7 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 
-namespace ELTE.Windows.Sudoku.Persistence
+namespace ELTE.Forms.Sudoku.Persistence
 {
     /// <summary>
     /// Sudoku fájlkezelő típusa.
@@ -39,7 +39,7 @@ namespace ELTE.Windows.Sudoku.Persistence
                     return table;
                 }
             }
-            catch
+            catch 
             {
                 throw new SudokuDataException();
             }
@@ -68,7 +68,7 @@ namespace ELTE.Windows.Sudoku.Persistence
                     }
                 }
             }
-            catch
+            catch 
             {
                 throw new SudokuDataException();
             }

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ELTE.Windows.Sudoku.Properties {
+namespace ELTE.Forms.Sudoku.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

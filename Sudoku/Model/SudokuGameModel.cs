@@ -1,8 +1,8 @@
-﻿using ELTE.Windows.Sudoku.Persistence;
+﻿using ELTE.Forms.Sudoku.Persistence;
 using System;
 using System.Threading.Tasks;
 
-namespace ELTE.Windows.Sudoku.Model
+namespace ELTE.Forms.Sudoku.Model
 {
     /// <summary>
     /// Játéknehézség felsorolási típusa.

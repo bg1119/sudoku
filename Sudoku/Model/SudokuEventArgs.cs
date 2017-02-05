@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ELTE.Windows.Sudoku.Model
+namespace ELTE.Forms.Sudoku.Model
 {
     /// <summary>
     /// Sudoku eseményargumentum típusa.

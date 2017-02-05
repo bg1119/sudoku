@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace ELTE.Windows.Sudoku.Persistence
+namespace ELTE.Forms.Sudoku.Persistence
 {
     /// <summary>
     /// Sudoku fájl kezelő felülete.
