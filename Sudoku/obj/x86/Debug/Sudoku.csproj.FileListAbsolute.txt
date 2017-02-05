@@ -1,0 +1,13 @@
+c:\Adatok\Programok\eva2\minta\2\Sudoku\Sudoku\bin\Debug\Sudoku.exe.config
+c:\Adatok\Programok\eva2\minta\2\Sudoku\Sudoku\bin\Debug\Sudoku.exe
+c:\Adatok\Programok\eva2\minta\2\Sudoku\Sudoku\bin\Debug\Sudoku.pdb
+c:\Adatok\Programok\eva2\minta\2\Sudoku\Sudoku\obj\x86\Debug\View\MainWindow.baml
+c:\Adatok\Programok\eva2\minta\2\Sudoku\Sudoku\obj\x86\Debug\View\MainWindow.g.cs
+c:\Adatok\Programok\eva2\minta\2\Sudoku\Sudoku\obj\x86\Debug\App.g.cs
+c:\Adatok\Programok\eva2\minta\2\Sudoku\Sudoku\obj\x86\Debug\Sudoku_MarkupCompile.cache
+c:\Adatok\Programok\eva2\minta\2\Sudoku\Sudoku\obj\x86\Debug\Sudoku.g.resources
+c:\Adatok\Programok\eva2\minta\2\Sudoku\Sudoku\obj\x86\Debug\ELTE.Windows.Sudoku.Properties.Resources.resources
+c:\Adatok\Programok\eva2\minta\2\Sudoku\Sudoku\obj\x86\Debug\Sudoku.csproj.GenerateResource.Cache
+c:\Adatok\Programok\eva2\minta\2\Sudoku\Sudoku\obj\x86\Debug\Sudoku.exe
+c:\Adatok\Programok\eva2\minta\2\Sudoku\Sudoku\obj\x86\Debug\Sudoku.pdb
+C:\Adatok\Programok\eva2\minta\2\Sudoku\Sudoku\obj\x86\Debug\Sudoku.csprojResolveAssemblyReference.cache
