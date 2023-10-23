@@ -7,24 +7,18 @@ namespace ELTE.Forms.Sudoku.Persistence
     /// </summary>
     public class SudokuTable
     {
-        #region Fields
-
-        private Int32 _regionSize; // ház méret
-        private Int32[,] _fieldValues; // mezőértékek
-        private Boolean[,] _fieldLocks; // mező zárolások
-
-        #endregion
-
-        #region Properties
+        private int _regionSize; // ház méret
+        private int[,] _fieldValues; // mezőértékek
+        private bool[,] _fieldLocks; // mező zárolások
 
         /// <summary>
         /// Játéktábla kitöltöttségének lekérdezése.
         /// </summary>
-        public Boolean IsFilled 
+        public bool IsFilled
         {
             get
             {
-                foreach (Int32 value in _fieldValues)
+                foreach (var value in _fieldValues)
                     if (value == 0)
                         return false;
                 return true;
@@ -34,12 +28,14 @@ namespace ELTE.Forms.Sudoku.Persistence
         /// <summary>
         /// Házak méretének lekérdezése.
         /// </summary>
-        public Int32 RegionSize { get { return _regionSize; } }
+        public int RegionSize
+        { get { return _regionSize; } }
 
         /// <summary>
         /// Játéktábla méretének lekérdezése.
         /// </summary>
-        public Int32 Size { get { return _fieldValues.GetLength(0); } }
+        public int Size
+        { get { return _fieldValues.GetLength(0); } }
 
         /// <summary>
         /// Mező értékének lekérdezése.
@@ -47,11 +43,8 @@ namespace ELTE.Forms.Sudoku.Persistence
         /// <param name="x">Vízszintes koordináta.</param>
         /// <param name="y">Függőleges koordináta.</param>
         /// <returns>Mező értéke.</returns>
-        public Int32 this[Int32 x, Int32 y] { get { return GetValue(x, y); } }
-
-        #endregion
-
-        #region Constructors
+        public int this[int x, int y]
+        { get { return GetValue(x, y); } }
 
         /// <summary>
         /// Sudoku játéktábla példányosítása.
@@ -63,7 +56,7 @@ namespace ELTE.Forms.Sudoku.Persistence
         /// </summary>
         /// <param name="tableSize">Játéktábla mérete.</param>
         /// <param name="regionSize">Ház mérete.</param>
-        public SudokuTable(Int32 tableSize, Int32 regionSize)
+        public SudokuTable(int tableSize, int regionSize)
         {
             if (tableSize < 0)
                 throw new ArgumentOutOfRangeException("The table size is less than 0.", "tableSize");
@@ -75,13 +68,9 @@ namespace ELTE.Forms.Sudoku.Persistence
                 throw new ArgumentException("The table size is not a multiple of the region size.", "regionSize");
 
             _regionSize = regionSize;
-            _fieldValues = new Int32[tableSize, tableSize];
-            _fieldLocks = new Boolean[tableSize, tableSize];
+            _fieldValues = new int[tableSize, tableSize];
+            _fieldLocks = new bool[tableSize, tableSize];
         }
-
-        #endregion
-
-        #region Public methods
 
         /// <summary>
         /// Mező kitöltetlenségének lekérdezése.
@@ -89,7 +78,7 @@ namespace ELTE.Forms.Sudoku.Persistence
         /// <param name="x">Vízszintes koordináta.</param>
         /// <param name="y">Függőleges koordináta.</param>
         /// <returns>Igaz, ha a mező ki van töltve, egyébként hamis.</returns>
-        public Boolean IsEmpty(Int32 x, Int32 y)
+        public bool IsEmpty(int x, int y)
         {
             if (x < 0 || x >= _fieldValues.GetLength(0))
                 throw new ArgumentOutOfRangeException("x", "The X coordinate is out of range.");
@@ -105,7 +94,7 @@ namespace ELTE.Forms.Sudoku.Persistence
         /// <param name="x">Vízszintes koordináta.</param>
         /// <param name="y">Függőleges koordináta.</param>
         /// <returns>Igaz, ha a mező zárolva van, különben hamis.</returns>
-        public Boolean IsLocked(Int32 x, Int32 y)
+        public bool IsLocked(int x, int y)
         {
             if (x < 0 || x >= _fieldValues.GetLength(0))
                 throw new ArgumentOutOfRangeException("x", "The X coordinate is out of range.");
@@ -121,7 +110,7 @@ namespace ELTE.Forms.Sudoku.Persistence
         /// <param name="x">Vízszintes koordináta.</param>
         /// <param name="y">Függőleges koordináta.</param>
         /// <returns>A mező értéke.</returns>
-        public Int32 GetValue(Int32 x, Int32 y)
+        public int GetValue(int x, int y)
         {
             if (x < 0 || x >= _fieldValues.GetLength(0))
                 throw new ArgumentOutOfRangeException("x", "The X coordinate is out of range.");
@@ -138,7 +127,7 @@ namespace ELTE.Forms.Sudoku.Persistence
         /// <param name="y">Függőleges koordináta.</param>
         /// <param name="value">Érték.</param>
         /// <param name="lockField">Zárolja-e a mezőt.</param>
-        public void SetValue(Int32 x, Int32 y, Int32 value, Boolean lockField) 
+        public void SetValue(int x, int y, int value, bool lockField)
         {
             if (x < 0 || x >= _fieldValues.GetLength(0))
                 throw new ArgumentOutOfRangeException("x", "The X coordinate is out of range.");
@@ -160,7 +149,7 @@ namespace ELTE.Forms.Sudoku.Persistence
         /// </summary>
         /// <param name="x">Vízszintes koordináta.</param>
         /// <param name="y">Függőleges koordináta.</param>
-        public void StepValue(Int32 x, Int32 y)
+        public void StepValue(int x, int y)
         {
             if (x < 0 || x >= _fieldValues.GetLength(0))
                 throw new ArgumentOutOfRangeException("x", "The X coordinate is out of range.");
@@ -182,7 +171,7 @@ namespace ELTE.Forms.Sudoku.Persistence
         /// </summary>
         /// <param name="x">Vízszintes koordináta.</param>
         /// <param name="y">Függőleges koordináta.</param>
-        public void SetLock(Int32 x, Int32 y)
+        public void SetLock(int x, int y)
         {
             if (x < 0 || x >= _fieldValues.GetLength(0))
                 throw new ArgumentOutOfRangeException("x", "The X coordinate is out of range.");
@@ -192,35 +181,31 @@ namespace ELTE.Forms.Sudoku.Persistence
             _fieldLocks[x, y] = true;
         }
 
-        #endregion
-
-        #region Private methods
-
         /// <summary>
         /// Lépésellenőrzés.
         /// </summary>
         /// <param name="x">Vízszintes koordináta.</param>
         /// <param name="y">Függőleges koordináta.</param>
         /// <returns>Igaz, ha a lépés engedélyezett, különben hamis.</returns>
-        private Boolean CheckStep(Int32 x, Int32 y)
+        private bool CheckStep(int x, int y)
         {
             if (_fieldValues[x, y] == 0)
                 return true;
             else
             {
                 // sor ellenőrzése:
-                for (Int32 i = 0; i < _fieldValues.GetLength(0); i++)
+                for (var i = 0; i < _fieldValues.GetLength(0); i++)
                     if (_fieldValues[i, y] == _fieldValues[x, y] && x != i)
                         return false;
 
                 // oszlop ellenőrzése:
-                for (Int32 j = 0; j < _fieldValues.GetLength(1); j++)
+                for (var j = 0; j < _fieldValues.GetLength(1); j++)
                     if (_fieldValues[x, j] == _fieldValues[x, y] && y != j)
                         return false;
 
                 // ház ellenőrzése:
-                for (Int32 i = _regionSize * (x / _regionSize); i < _regionSize * ((x + 1) / _regionSize); i++)
-                    for (Int32 j = _regionSize * (y / _regionSize); j < _regionSize * ((y + 1) / _regionSize); j++)
+                for (var i = _regionSize * (x / _regionSize); i < _regionSize * ((x + 1) / _regionSize); i++)
+                    for (var j = _regionSize * (y / _regionSize); j < _regionSize * ((y + 1) / _regionSize); j++)
                     {
                         if (_fieldValues[i, j] == _fieldValues[x, y] && x != i && y != j)
                             return false;
@@ -229,7 +214,5 @@ namespace ELTE.Forms.Sudoku.Persistence
                 return true;
             }
         }
-
-        #endregion
     }
 }

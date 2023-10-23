@@ -11,16 +11,10 @@ namespace ELTE.Forms.Sudoku.View
     /// </summary>
     public partial class GameForm : Form
     {
-        #region Fields
-
         private ISudokuDataAccess _dataAccess; // adatelérés
         private SudokuGameModel _model; // játékmodell
         private Button[,] _buttonGrid; // gombrács
         private Timer _timer; // időzítő
-
-        #endregion
-
-        #region Constructors
 
         /// <summary>
         /// Játékablak példányosítása.
@@ -30,14 +24,10 @@ namespace ELTE.Forms.Sudoku.View
             InitializeComponent();
         }
 
-        #endregion
-
-        #region Form event handlers
-
         /// <summary>
         /// Játékablak betöltésének eseménykezelője.
         /// </summary>
-        private void GameForm_Load(Object sender, EventArgs e)
+        private void GameForm_Load(object sender, EventArgs e)
         {
             // adatelérés példányosítása
             _dataAccess = new SudokuFileDataAccess();
@@ -63,14 +53,10 @@ namespace ELTE.Forms.Sudoku.View
             _timer.Start();
         }
 
-        #endregion
-
-        #region Game event handlers
-
         /// <summary>
         /// Játék előrehaladásának eseménykezelője.
         /// </summary>
-        private void Game_GameAdvanced(Object sender, SudokuEventArgs e)
+        private void Game_GameAdvanced(object sender, SudokuEventArgs e)
         {
             _toolLabelGameTime.Text = TimeSpan.FromSeconds(e.GameTime).ToString("g");
             _toolLabelGameSteps.Text = e.GameStepCount.ToString();
@@ -80,11 +66,11 @@ namespace ELTE.Forms.Sudoku.View
         /// <summary>
         /// Játék végének eseménykezelője.
         /// </summary>
-        private void Game_GameOver(Object sender, SudokuEventArgs e)
+        private void Game_GameOver(object sender, SudokuEventArgs e)
         {
             _timer.Stop();
 
-            foreach (Button button in _buttonGrid) // kikapcsoljuk a gombokat
+            foreach (var button in _buttonGrid) // kikapcsoljuk a gombokat
                 button.Enabled = false;
 
             _menuFileSaveGame.Enabled = false;
@@ -107,36 +93,28 @@ namespace ELTE.Forms.Sudoku.View
             }
         }
 
-        #endregion
-
-        #region Grid event handlers
-
         /// <summary>
         /// Gombrács eseménykezelője.
         /// </summary>
-        private void ButtonGrid_MouseClick(Object sender, MouseEventArgs e)
+        private void ButtonGrid_MouseClick(object sender, MouseEventArgs e)
         {
             // a TabIndex-ből megkapjuk a sort és oszlopot
-            Int32 x = ((sender as Button).TabIndex - 100) / _model.Table.Size;
-            Int32 y = ((sender as Button).TabIndex - 100) % _model.Table.Size;
+            var x = ((sender as Button).TabIndex - 100) / _model.Table.Size;
+            var y = ((sender as Button).TabIndex - 100) % _model.Table.Size;
 
             _model.Step(x, y); // lépés a játékban
 
             // mező frissítése
             if (_model.Table.IsEmpty(x, y))
-                _buttonGrid[x, y].Text = String.Empty;
+                _buttonGrid[x, y].Text = string.Empty;
             else
                 _buttonGrid[x, y].Text = _model.Table[x, y].ToString();
         }
 
-        #endregion
-
-        #region Menu event handlers
-
         /// <summary>
         /// Új játék eseménykezelője.
         /// </summary>
-        private void MenuFileNewGame_Click(Object sender, EventArgs e)
+        private void MenuFileNewGame_Click(object sender, EventArgs e)
         {
             _menuFileSaveGame.Enabled = true;
 
@@ -149,9 +127,9 @@ namespace ELTE.Forms.Sudoku.View
         /// <summary>
         /// Játék betöltésének eseménykezelője.
         /// </summary>
-        private async void MenuFileLoadGame_Click(Object sender, EventArgs e)
+        private async void MenuFileLoadGame_Click(object sender, EventArgs e)
         {
-            Boolean restartTimer = _timer.Enabled;
+            var restartTimer = _timer.Enabled;
             _timer.Stop();
 
             if (_openFileDialog.ShowDialog() == DialogResult.OK) // ha kiválasztottunk egy fájlt
@@ -180,9 +158,9 @@ namespace ELTE.Forms.Sudoku.View
         /// <summary>
         /// Játék mentésének eseménykezelője.
         /// </summary>
-        private async void MenuFileSaveGame_Click(Object sender, EventArgs e)
+        private async void MenuFileSaveGame_Click(object sender, EventArgs e)
         {
-            Boolean restartTimer = _timer.Enabled;
+            var restartTimer = _timer.Enabled;
             _timer.Stop();
 
             if (_saveFileDialog.ShowDialog() == DialogResult.OK)
@@ -207,11 +185,11 @@ namespace ELTE.Forms.Sudoku.View
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void MenuFileExit_Click(Object sender, EventArgs e)
+        private void MenuFileExit_Click(object sender, EventArgs e)
         {
-            Boolean restartTimer = _timer.Enabled;
+            var restartTimer = _timer.Enabled;
             _timer.Stop();
-            
+
             // megkérdezzük, hogy biztos ki szeretne-e lépni
             if (MessageBox.Show("Biztosan ki szeretne lépni?", "Sudoku játék", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
@@ -225,36 +203,28 @@ namespace ELTE.Forms.Sudoku.View
             }
         }
 
-        private void MenuGameEasy_Click(Object sender, EventArgs e)
+        private void MenuGameEasy_Click(object sender, EventArgs e)
         {
             _model.GameDifficulty = GameDifficulty.Easy;
         }
 
-        private void MenuGameMedium_Click(Object sender, EventArgs e)
+        private void MenuGameMedium_Click(object sender, EventArgs e)
         {
             _model.GameDifficulty = GameDifficulty.Medium;
         }
 
-        private void MenuGameHard_Click(Object sender, EventArgs e)
+        private void MenuGameHard_Click(object sender, EventArgs e)
         {
             _model.GameDifficulty = GameDifficulty.Hard;
         }
 
-        #endregion
-
-        #region Timer event handlers
-
         /// <summary>
         /// Időzítő eseménykeztelője.
         /// </summary>
-        private void Timer_Tick(Object sender, EventArgs e)
+        private void Timer_Tick(object sender, EventArgs e)
         {
             _model.AdvanceTime(); // játék léptetése
         }
-
-        #endregion
-
-        #region Private methods
 
         /// <summary>
         /// Új tábla létrehozása.
@@ -262,8 +232,8 @@ namespace ELTE.Forms.Sudoku.View
         private void GenerateTable()
         {
             _buttonGrid = new Button[_model.Table.Size, _model.Table.Size];
-            for (Int32 i = 0; i < _model.Table.Size; i++)
-                for (Int32 j = 0; j < _model.Table.Size; j++)
+            for (var i = 0; i < _model.Table.Size; i++)
+                for (var j = 0; j < _model.Table.Size; j++)
                 {
                     _buttonGrid[i, j] = new Button();
                     _buttonGrid[i, j].Location = new Point(5 + 50 * j, 25 + 50 * i); // elhelyezkedés
@@ -283,15 +253,15 @@ namespace ELTE.Forms.Sudoku.View
         /// <summary>
         /// Tábla beállítása.
         /// </summary>
-        private void SetupTable() 
+        private void SetupTable()
         {
-            for (Int32 i = 0; i < _buttonGrid.GetLength(0); i++)
+            for (var i = 0; i < _buttonGrid.GetLength(0); i++)
             {
-                for (Int32 j = 0; j < _buttonGrid.GetLength(1); j++)
+                for (var j = 0; j < _buttonGrid.GetLength(1); j++)
                 {
                     if (_model.Table.IsEmpty(i, j)) // ha nincs kitöltve a mező
                     {
-                        _buttonGrid[i, j].Text = String.Empty;
+                        _buttonGrid[i, j].Text = string.Empty;
                         _buttonGrid[i, j].Enabled = true;
                         _buttonGrid[i, j].BackColor = Color.White;
                     }
@@ -299,8 +269,8 @@ namespace ELTE.Forms.Sudoku.View
                     {
                         _buttonGrid[i, j].Text = _model.Table[i, j].ToString();
                         _buttonGrid[i, j].Enabled = false; // gomb bekapcsolása
-                        _buttonGrid[i, j].BackColor = Color.Yellow; 
-                            // háttérszín sárga, ha zárolni kell a mezőt, különben fehér
+                        _buttonGrid[i, j].BackColor = Color.Yellow;
+                        // háttérszín sárga, ha zárolni kell a mezőt, különben fehér
                     }
                 }
             }
@@ -318,7 +288,5 @@ namespace ELTE.Forms.Sudoku.View
             _menuGameMedium.Checked = (_model.GameDifficulty == GameDifficulty.Medium);
             _menuGameHard.Checked = (_model.GameDifficulty == GameDifficulty.Hard);
         }
-
-        #endregion
     }
 }

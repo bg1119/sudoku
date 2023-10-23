@@ -13,13 +13,13 @@ namespace ELTE.Forms.Sudoku.Persistence
         /// </summary>
         /// <param name="path">Elérési útvonal.</param>
         /// <returns>A fájlból beolvasott játéktábla.</returns>
-        Task<SudokuTable> Load(String path);
+        Task<SudokuTable> Load(string path);
 
         /// <summary>
         /// Fájl mentése.
         /// </summary>
         /// <param name="fileName">Elérési útvonal.</param>
         /// <param name="path">A fájlba kiírandó játéktábla.</param>
-        Task Save(String fileName, SudokuTable path);
+        Task Save(string fileName, SudokuTable path);
     }
 }

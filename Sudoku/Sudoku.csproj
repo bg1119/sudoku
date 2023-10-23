@@ -64,6 +64,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\GameDifficulty.cs" />
     <Compile Include="Persistence\ISudokuDataAccess.cs" />
     <Compile Include="Persistence\SudokuFileDataAccess.cs" />
     <Compile Include="Persistence\SudokuTable.cs" />

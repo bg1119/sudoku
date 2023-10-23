@@ -5,80 +5,22 @@ using System.Threading.Tasks;
 namespace ELTE.Forms.Sudoku.Model
 {
     /// <summary>
-    /// Játéknehézség felsorolási típusa.
-    /// </summary>
-    public enum GameDifficulty { Easy, Medium, Hard }
-
-    /// <summary>
     /// Sudoku játék típusa.
     /// </summary>
     public class SudokuGameModel
     {
-        #region Difficulty constants
-
-        private const Int32 GameTimeEasy = 3600;
-        private const Int32 GameTimeMedium = 1200;
-        private const Int32 GameTimeHard = 600;
-        private const Int32 GeneratedFieldCountEasy = 6;
-        private const Int32 GeneratedFieldCountMedium = 12;
-        private const Int32 GeneratedFieldCountHard = 18;
-
-        #endregion
-
-        #region Fields
+        private const int GameTimeEasy = 3600;
+        private const int GameTimeMedium = 1200;
+        private const int GameTimeHard = 600;
+        private const int GeneratedFieldCountEasy = 6;
+        private const int GeneratedFieldCountMedium = 12;
+        private const int GeneratedFieldCountHard = 18;
 
         private ISudokuDataAccess _dataAccess; // adatelérés
         private SudokuTable _table; // játéktábla
         private GameDifficulty _gameDifficulty; // nehézség
-        private Int32 _gameStepCount; // lépések száma
-        private Int32 _gameTime; // játékidő
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Lépések számának lekérdezése.
-        /// </summary>
-        public Int32 GameStepCount { get { return _gameStepCount; } }
-
-        /// <summary>
-        /// Hátramaradt játékidő lekérdezése.
-        /// </summary>
-        public Int32 GameTime { get { return _gameTime; } }
-
-        /// <summary>
-        /// Játéktábla lekérdezése.
-        /// </summary>
-        public SudokuTable Table { get { return _table; } }
-
-        /// <summary>
-        /// Játék végének lekérdezése.
-        /// </summary>
-        public Boolean IsGameOver  { get { return (_gameTime == 0 || _table.IsFilled); } }
-
-        /// <summary>
-        /// Játéknehézség lekérdezése, vagy beállítása.
-        /// </summary>
-        public GameDifficulty GameDifficulty { get { return _gameDifficulty; } set { _gameDifficulty = value; } }
-
-        #endregion
-
-        #region Events
-
-        /// <summary>
-        /// Játék előrehaladásának eseménye.
-        /// </summary>
-        public event EventHandler<SudokuEventArgs> GameAdvanced;
-
-        /// <summary>
-        /// Játék végének eseménye.
-        /// </summary>
-        public event EventHandler<SudokuEventArgs> GameOver;
-
-        #endregion
-
-        #region Constructor
+        private int _gameStepCount; // lépések száma
+        private int _gameTime; // játékidő
 
         /// <summary>
         /// Sudoku játék példányosítása.
@@ -91,9 +33,45 @@ namespace ELTE.Forms.Sudoku.Model
             _gameDifficulty = GameDifficulty.Medium;
         }
 
-        #endregion
+        /// <summary>
+        /// Játék előrehaladásának eseménye.
+        /// </summary>
+        public event EventHandler<SudokuEventArgs> GameAdvanced;
 
-        #region Public game methods
+        /// <summary>
+        /// Játék végének eseménye.
+        /// </summary>
+        public event EventHandler<SudokuEventArgs> GameOver;
+
+        /// <summary>
+        /// Lépések számának lekérdezése.
+        /// </summary>
+        public int GameStepCount
+        { get { return _gameStepCount; } }
+
+        /// <summary>
+        /// Hátramaradt játékidő lekérdezése.
+        /// </summary>
+        public int GameTime
+        { get { return _gameTime; } }
+
+        /// <summary>
+        /// Játéktábla lekérdezése.
+        /// </summary>
+        public SudokuTable Table
+        { get { return _table; } }
+
+        /// <summary>
+        /// Játék végének lekérdezése.
+        /// </summary>
+        public bool IsGameOver
+        { get { return (_gameTime == 0 || _table.IsFilled); } }
+
+        /// <summary>
+        /// Játéknehézség lekérdezése, vagy beállítása.
+        /// </summary>
+        public GameDifficulty GameDifficulty
+        { get { return _gameDifficulty; } set { _gameDifficulty = value; } }
 
         /// <summary>
         /// Új játék kezdése.
@@ -104,15 +82,17 @@ namespace ELTE.Forms.Sudoku.Model
             _gameStepCount = 0;
 
             switch (_gameDifficulty) // nehézségfüggő beállítása az időnek, illetve a generált mezőknek
-            { 
+            {
                 case GameDifficulty.Easy:
                     _gameTime = GameTimeEasy;
                     GenerateFields(GeneratedFieldCountEasy);
                     break;
+
                 case GameDifficulty.Medium:
                     _gameTime = GameTimeMedium;
                     GenerateFields(GeneratedFieldCountMedium);
                     break;
+
                 case GameDifficulty.Hard:
                     _gameTime = GameTimeHard;
                     GenerateFields(GeneratedFieldCountHard);
@@ -135,13 +115,12 @@ namespace ELTE.Forms.Sudoku.Model
                 OnGameOver(false);
         }
 
-
         /// <summary>
         /// Táblabeli lépés végrehajtása.
         /// </summary>
         /// <param name="x">Vízszintes koordináta.</param>
         /// <param name="y">Függőleges koordináta.</param>
-        public void Step(Int32 x, Int32 y)
+        public void Step(int x, int y)
         {
             if (IsGameOver) // ha már vége a játéknak, nem játszhatunk
                 return;
@@ -164,7 +143,7 @@ namespace ELTE.Forms.Sudoku.Model
         /// Játék betöltése.
         /// </summary>
         /// <param name="path">Elérési útvonal.</param>
-        public async Task LoadGame(String path)
+        public async Task LoadGame(string path)
         {
             if (_dataAccess == null)
                 throw new InvalidOperationException("No data access is provided.");
@@ -177,9 +156,11 @@ namespace ELTE.Forms.Sudoku.Model
                 case GameDifficulty.Easy:
                     _gameTime = GameTimeEasy;
                     break;
+
                 case GameDifficulty.Medium:
                     _gameTime = GameTimeMedium;
                     break;
+
                 case GameDifficulty.Hard:
                     _gameTime = GameTimeHard;
                     break;
@@ -190,7 +171,7 @@ namespace ELTE.Forms.Sudoku.Model
         /// Játék mentése.
         /// </summary>
         /// <param name="path">Elérési útvonal.</param>
-        public async Task SaveGame(String path)
+        public async Task SaveGame(string path)
         {
             if (_dataAccess == null)
                 throw new InvalidOperationException("No data access is provided.");
@@ -198,21 +179,17 @@ namespace ELTE.Forms.Sudoku.Model
             await _dataAccess.Save(path, _table);
         }
 
-        #endregion
-
-        #region Private game methods
-
         /// <summary>
         /// Mezők generálása.
         /// </summary>
         /// <param name="count">Mezők száma.</param>
-        private void GenerateFields(Int32 count)
+        private void GenerateFields(int count)
         {
-            Random random = new Random();
+            var random = new Random();
 
-            for (Int32 i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
-                Int32 x, y;
+                int x, y;
 
                 do
                 {
@@ -223,7 +200,7 @@ namespace ELTE.Forms.Sudoku.Model
 
                 do
                 {
-                    for (Int32 j = random.Next(10) + 1; j >= 0; j--) // véletlenszerű növelés
+                    for (var j = random.Next(10) + 1; j >= 0; j--) // véletlenszerű növelés
                     {
                         _table.StepValue(x, y);
                     }
@@ -233,10 +210,6 @@ namespace ELTE.Forms.Sudoku.Model
                 _table.SetLock(x, y);
             }
         }
-
-        #endregion
-
-        #region Private event methods
 
         /// <summary>
         /// Játékidő változás eseményének kiváltása.
@@ -251,12 +224,10 @@ namespace ELTE.Forms.Sudoku.Model
         /// Játék vége eseményének kiváltása.
         /// </summary>
         /// <param name="isWon">Győztünk-e a játékban.</param>
-        private void OnGameOver(Boolean isWon)
+        private void OnGameOver(bool isWon)
         {
             if (GameOver != null)
                 GameOver(this, new SudokuEventArgs(isWon, _gameStepCount, _gameTime));
         }
-
-        #endregion
     }
 }
