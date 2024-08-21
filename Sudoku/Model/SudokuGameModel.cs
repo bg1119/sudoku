@@ -36,6 +36,8 @@ namespace ELTE.Forms.Sudoku.Model
 
         public GameDifficulty GameDifficulty { get; set; }
 
+        public bool IsInEditMode { get; set; }
+
         public void NewGame()
         {
             Table = new SudokuTable();
@@ -74,14 +76,21 @@ namespace ELTE.Forms.Sudoku.Model
                 OnGameOver(false);
         }
 
-        public void Step(int x, int y)
+        public void Step(int x, int y, bool direction = true)
         {
             if (IsGameOver)
                 return;
-            if (Table.IsLocked(x, y))
+            if (!IsInEditMode && Table.IsLocked(x, y))
                 return;
 
-            Table.StepValue(x, y);
+            if (direction)
+            {
+                Table.StepValue(x, y);
+            }
+            else
+            {
+                Table.StepBackValue(x, y);
+            }
 
             GameStepCount++;
 
@@ -91,6 +100,11 @@ namespace ELTE.Forms.Sudoku.Model
             {
                 OnGameOver(true);
             }
+        }
+
+        public void SetLock(int x, int y)
+        {
+            Table.SetLock(x,y);
         }
 
         public async Task LoadGame(string path)

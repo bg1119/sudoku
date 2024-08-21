@@ -47,6 +47,9 @@
             this._toolLabelGameSteps = new System.Windows.Forms.ToolStripStatusLabel();
             this._toolLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this._toolLabelGameTime = new System.Windows.Forms.ToolStripStatusLabel();
+            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.yesEditToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.noEditToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._menuStrip.SuspendLayout();
             this._statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -55,7 +58,8 @@
             // 
             this._menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this._menuFile,
-            this._menuSettings});
+            this._menuSettings,
+            this.editToolStripMenuItem});
             this._menuStrip.Location = new System.Drawing.Point(0, 0);
             this._menuStrip.Name = "_menuStrip";
             this._menuStrip.Size = new System.Drawing.Size(492, 24);
@@ -126,21 +130,21 @@
             // _menuGameEasy
             // 
             this._menuGameEasy.Name = "_menuGameEasy";
-            this._menuGameEasy.Size = new System.Drawing.Size(145, 22);
+            this._menuGameEasy.Size = new System.Drawing.Size(180, 22);
             this._menuGameEasy.Text = "Könnyű játék";
             this._menuGameEasy.Click += new System.EventHandler(this.MenuGameEasy_Click);
             // 
             // _menuGameMedium
             // 
             this._menuGameMedium.Name = "_menuGameMedium";
-            this._menuGameMedium.Size = new System.Drawing.Size(145, 22);
+            this._menuGameMedium.Size = new System.Drawing.Size(180, 22);
             this._menuGameMedium.Text = "Közepes játék";
             this._menuGameMedium.Click += new System.EventHandler(this.MenuGameMedium_Click);
             // 
             // _menuGameHard
             // 
             this._menuGameHard.Name = "_menuGameHard";
-            this._menuGameHard.Size = new System.Drawing.Size(145, 22);
+            this._menuGameHard.Size = new System.Drawing.Size(180, 22);
             this._menuGameHard.Text = "Nehéz játék";
             this._menuGameHard.Click += new System.EventHandler(this.MenuGameHard_Click);
             // 
@@ -195,6 +199,31 @@
             this._toolLabelGameTime.Size = new System.Drawing.Size(47, 19);
             this._toolLabelGameTime.Text = "0:00:00";
             // 
+            // editToolStripMenuItem
+            // 
+            this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.yesEditToolStripMenuItem,
+            this.noEditToolStripMenuItem});
+            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(77, 20);
+            this.editToolStripMenuItem.Text = "Szerkesztés";
+            // 
+            // yesEditToolStripMenuItem
+            // 
+            this.yesEditToolStripMenuItem.Name = "yesEditToolStripMenuItem";
+            this.yesEditToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.yesEditToolStripMenuItem.Text = "Igen";
+            this.yesEditToolStripMenuItem.Click += new System.EventHandler(this.yesEditToolStripMenuItem_Click);
+            // 
+            // noEditToolStripMenuItem
+            // 
+            this.noEditToolStripMenuItem.Checked = true;
+            this.noEditToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.noEditToolStripMenuItem.Name = "noEditToolStripMenuItem";
+            this.noEditToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.noEditToolStripMenuItem.Text = "Nem";
+            this.noEditToolStripMenuItem.Click += new System.EventHandler(this.noEditToolStripMenuItem_Click);
+            // 
             // GameForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -238,6 +267,9 @@
         private System.Windows.Forms.ToolStripStatusLabel _toolLabelGameSteps;
         private System.Windows.Forms.ToolStripStatusLabel _toolLabel2;
         private System.Windows.Forms.ToolStripStatusLabel _toolLabelGameTime;
+        private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem yesEditToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem noEditToolStripMenuItem;
     }
 }
 
