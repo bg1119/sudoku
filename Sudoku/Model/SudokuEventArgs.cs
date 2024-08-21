@@ -4,24 +4,17 @@ namespace ELTE.Forms.Sudoku.Model
 {
     public class SudokuEventArgs : EventArgs
     {
-        private int _gameTime;
-        private int _steps;
-        private bool _isWon;
-
         public SudokuEventArgs(bool isWon, int gameStepCount, int gameTime)
         {
-            _isWon = isWon;
-            _steps = gameStepCount;
-            _gameTime = gameTime;
+            IsWon = isWon;
+            GameStepCount = gameStepCount;
+            GameTime = gameTime;
         }
 
-        public int GameTime
-        { get { return _gameTime; } }
+        public int GameTime { get; }
 
-        public int GameStepCount
-        { get { return _steps; } }
+        public int GameStepCount { get; }
 
-        public bool IsWon
-        { get { return _isWon; } }
+        public bool IsWon { get; }
     }
 }

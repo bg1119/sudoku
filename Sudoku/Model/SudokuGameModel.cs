@@ -13,59 +13,52 @@ namespace ELTE.Forms.Sudoku.Model
         private const int GeneratedFieldCountMedium = 12;
         private const int GeneratedFieldCountHard = 18;
 
-        private ISudokuDataAccess _dataAccess;
-        private SudokuTable _table;
-        private GameDifficulty _gameDifficulty;
-        private int _gameStepCount;
-        private int _gameTime;
+        private readonly ISudokuDataAccess _dataAccess;
 
         public SudokuGameModel(ISudokuDataAccess dataAccess)
         {
             _dataAccess = dataAccess;
-            _table = new SudokuTable();
-            _gameDifficulty = GameDifficulty.Medium;
+            Table = new SudokuTable();
+            GameDifficulty = GameDifficulty.Medium;
         }
 
         public event EventHandler<SudokuEventArgs> GameAdvanced;
 
         public event EventHandler<SudokuEventArgs> GameOver;
 
-        public int GameStepCount
-        { get { return _gameStepCount; } }
+        public int GameStepCount { get; private set; }
 
-        public int GameTime
-        { get { return _gameTime; } }
+        public int GameTime { get; private set; }
 
-        public SudokuTable Table
-        { get { return _table; } }
+        public SudokuTable Table { get; private set; }
 
-        public bool IsGameOver
-        { get { return (_gameTime == 0 || _table.IsFilled); } }
+        public bool IsGameOver => (GameTime == 0 || Table.IsFilled);
 
-        public GameDifficulty GameDifficulty
-        { get { return _gameDifficulty; } set { _gameDifficulty = value; } }
+        public GameDifficulty GameDifficulty { get; set; }
 
         public void NewGame()
         {
-            _table = new SudokuTable();
-            _gameStepCount = 0;
+            Table = new SudokuTable();
+            GameStepCount = 0;
 
-            switch (_gameDifficulty) // nehézségfüggő beállítása az időnek, illetve a generált mezőknek
+            switch (GameDifficulty)
             {
                 case GameDifficulty.Easy:
-                    _gameTime = GameTimeEasy;
+                    GameTime = GameTimeEasy;
                     GenerateFields(GeneratedFieldCountEasy);
                     break;
 
                 case GameDifficulty.Medium:
-                    _gameTime = GameTimeMedium;
+                    GameTime = GameTimeMedium;
                     GenerateFields(GeneratedFieldCountMedium);
                     break;
 
                 case GameDifficulty.Hard:
-                    _gameTime = GameTimeHard;
+                    GameTime = GameTimeHard;
                     GenerateFields(GeneratedFieldCountHard);
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
@@ -74,10 +67,10 @@ namespace ELTE.Forms.Sudoku.Model
             if (IsGameOver)
                 return;
 
-            _gameTime--;
+            GameTime--;
             OnGameAdvanced();
 
-            if (_gameTime == 0)
+            if (GameTime == 0)
                 OnGameOver(false);
         }
 
@@ -85,16 +78,16 @@ namespace ELTE.Forms.Sudoku.Model
         {
             if (IsGameOver)
                 return;
-            if (_table.IsLocked(x, y))
+            if (Table.IsLocked(x, y))
                 return;
 
-            _table.StepValue(x, y);
+            Table.StepValue(x, y);
 
-            _gameStepCount++;
+            GameStepCount++;
 
             OnGameAdvanced();
 
-            if (_table.IsFilled)
+            if (Table.IsFilled)
             {
                 OnGameOver(true);
             }
@@ -105,22 +98,24 @@ namespace ELTE.Forms.Sudoku.Model
             if (_dataAccess == null)
                 throw new InvalidOperationException("No data access is provided.");
 
-            _table = await _dataAccess.Load(path);
-            _gameStepCount = 0;
+            Table = await _dataAccess.Load(path);
+            GameStepCount = 0;
 
-            switch (_gameDifficulty)
+            switch (GameDifficulty)
             {
                 case GameDifficulty.Easy:
-                    _gameTime = GameTimeEasy;
+                    GameTime = GameTimeEasy;
                     break;
 
                 case GameDifficulty.Medium:
-                    _gameTime = GameTimeMedium;
+                    GameTime = GameTimeMedium;
                     break;
 
                 case GameDifficulty.Hard:
-                    _gameTime = GameTimeHard;
+                    GameTime = GameTimeHard;
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
@@ -129,7 +124,7 @@ namespace ELTE.Forms.Sudoku.Model
             if (_dataAccess == null)
                 throw new InvalidOperationException("No data access is provided.");
 
-            await _dataAccess.Save(path, _table);
+            await _dataAccess.Save(path, Table);
         }
 
         private void GenerateFields(int count)
@@ -142,34 +137,32 @@ namespace ELTE.Forms.Sudoku.Model
 
                 do
                 {
-                    x = random.Next(_table.Size);
-                    y = random.Next(_table.Size);
+                    x = random.Next(Table.Size);
+                    y = random.Next(Table.Size);
                 }
-                while (!_table.IsEmpty(x, y));
+                while (!Table.IsEmpty(x, y));
 
                 do
                 {
                     for (var j = random.Next(10) + 1; j >= 0; j--)
                     {
-                        _table.StepValue(x, y);
+                        Table.StepValue(x, y);
                     }
                 }
-                while (_table.IsEmpty(x, y));
+                while (Table.IsEmpty(x, y));
 
-                _table.SetLock(x, y);
+                Table.SetLock(x, y);
             }
         }
 
         private void OnGameAdvanced()
         {
-            if (GameAdvanced != null)
-                GameAdvanced(this, new SudokuEventArgs(false, _gameStepCount, _gameTime));
+            GameAdvanced?.Invoke(this, new SudokuEventArgs(false, GameStepCount, GameTime));
         }
 
         private void OnGameOver(bool isWon)
         {
-            if (GameOver != null)
-                GameOver(this, new SudokuEventArgs(isWon, _gameStepCount, _gameTime));
+            GameOver?.Invoke(this, new SudokuEventArgs(isWon, GameStepCount, GameTime));
         }
     }
 }
