@@ -235,8 +235,10 @@ namespace ELTE.Forms.Sudoku.View
             for (var i = 0; i < _model.Table.Size; i++)
                 for (var j = 0; j < _model.Table.Size; j++)
                 {
+                    var iBlock = i / 3;
+                    var jBlock = j / 3;
                     _buttonGrid[i, j] = new Button();
-                    _buttonGrid[i, j].Location = new Point(5 + 50 * j, 25 + 50 * i); // elhelyezkedés
+                    _buttonGrid[i, j].Location = new Point(5 + 50 * j + jBlock * 10, 25 + 50 * i + iBlock * 10); // elhelyezkedés
                     _buttonGrid[i, j].Size = new Size(50, 50); // méret
                     _buttonGrid[i, j].Font = new Font(FontFamily.GenericSansSerif, 25, FontStyle.Bold); // betűtípus
                     _buttonGrid[i, j].Enabled = false; // kikapcsolt állapot
