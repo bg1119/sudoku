@@ -58,7 +58,7 @@
             this._menuSettings});
             this._menuStrip.Location = new System.Drawing.Point(0, 0);
             this._menuStrip.Name = "_menuStrip";
-            this._menuStrip.Size = new System.Drawing.Size(462, 24);
+            this._menuStrip.Size = new System.Drawing.Size(492, 24);
             this._menuStrip.TabIndex = 0;
             this._menuStrip.Text = "menuStrip1";
             // 
@@ -126,21 +126,21 @@
             // _menuGameEasy
             // 
             this._menuGameEasy.Name = "_menuGameEasy";
-            this._menuGameEasy.Size = new System.Drawing.Size(152, 22);
+            this._menuGameEasy.Size = new System.Drawing.Size(145, 22);
             this._menuGameEasy.Text = "Könnyű játék";
             this._menuGameEasy.Click += new System.EventHandler(this.MenuGameEasy_Click);
             // 
             // _menuGameMedium
             // 
             this._menuGameMedium.Name = "_menuGameMedium";
-            this._menuGameMedium.Size = new System.Drawing.Size(152, 22);
+            this._menuGameMedium.Size = new System.Drawing.Size(145, 22);
             this._menuGameMedium.Text = "Közepes játék";
             this._menuGameMedium.Click += new System.EventHandler(this.MenuGameMedium_Click);
             // 
             // _menuGameHard
             // 
             this._menuGameHard.Name = "_menuGameHard";
-            this._menuGameHard.Size = new System.Drawing.Size(152, 22);
+            this._menuGameHard.Size = new System.Drawing.Size(145, 22);
             this._menuGameHard.Text = "Nehéz játék";
             this._menuGameHard.Click += new System.EventHandler(this.MenuGameHard_Click);
             // 
@@ -161,9 +161,9 @@
             this._toolLabelGameSteps,
             this._toolLabel2,
             this._toolLabelGameTime});
-            this._statusStrip.Location = new System.Drawing.Point(0, 480);
+            this._statusStrip.Location = new System.Drawing.Point(0, 510);
             this._statusStrip.Name = "_statusStrip";
-            this._statusStrip.Size = new System.Drawing.Size(462, 24);
+            this._statusStrip.Size = new System.Drawing.Size(492, 24);
             this._statusStrip.TabIndex = 1;
             this._statusStrip.Text = "statusStrip1";
             // 
@@ -199,7 +199,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(462, 504);
+            this.ClientSize = new System.Drawing.Size(492, 534);
             this.Controls.Add(this._statusStrip);
             this.Controls.Add(this._menuStrip);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
