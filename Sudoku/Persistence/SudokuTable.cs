@@ -1,32 +1,26 @@
 ﻿using System;
+using System.Linq;
 
 namespace ELTE.Forms.Sudoku.Persistence
 {
     public class SudokuTable
     {
-        private int _regionSize;
-        private int[,] _fieldValues;
-        private bool[,] _fieldLocks;
+        private readonly int[,] _fieldValues;
+        private readonly bool[,] _fieldLocks;
 
         public bool IsFilled
         {
             get
             {
-                foreach (var value in _fieldValues)
-                    if (value == 0)
-                        return false;
-                return true;
+                return _fieldValues.Cast<int>().All(value => value != 0);
             }
         }
 
-        public int RegionSize
-        { get { return _regionSize; } }
+        public int RegionSize { get; }
 
-        public int Size
-        { get { return _fieldValues.GetLength(0); } }
+        public int Size => _fieldValues.GetLength(0);
 
-        public int this[int x, int y]
-        { get { return GetValue(x, y); } }
+        public int this[int x, int y] => GetValue(x, y);
 
         public SudokuTable() : this(9, 3) { }
 
@@ -41,7 +35,7 @@ namespace ELTE.Forms.Sudoku.Persistence
             if (tableSize % regionSize != 0)
                 throw new ArgumentException("The table size is not a multiple of the region size.", "regionSize");
 
-            _regionSize = regionSize;
+            RegionSize = regionSize;
             _fieldValues = new int[tableSize, tableSize];
             _fieldLocks = new bool[tableSize, tableSize];
         }
@@ -124,25 +118,23 @@ namespace ELTE.Forms.Sudoku.Persistence
         {
             if (_fieldValues[x, y] == 0)
                 return true;
-            else
+
+            for (var i = 0; i < _fieldValues.GetLength(0); i++)
+                if (_fieldValues[i, y] == _fieldValues[x, y] && x != i)
+                    return false;
+
+            for (var j = 0; j < _fieldValues.GetLength(1); j++)
+                if (_fieldValues[x, j] == _fieldValues[x, y] && y != j)
+                    return false;
+
+            for (var i = RegionSize * (x / RegionSize); i < RegionSize * ((x + 1) / RegionSize); i++)
+            for (var j = RegionSize * (y / RegionSize); j < RegionSize * ((y + 1) / RegionSize); j++)
             {
-                for (var i = 0; i < _fieldValues.GetLength(0); i++)
-                    if (_fieldValues[i, y] == _fieldValues[x, y] && x != i)
-                        return false;
-
-                for (var j = 0; j < _fieldValues.GetLength(1); j++)
-                    if (_fieldValues[x, j] == _fieldValues[x, y] && y != j)
-                        return false;
-
-                for (var i = _regionSize * (x / _regionSize); i < _regionSize * ((x + 1) / _regionSize); i++)
-                    for (var j = _regionSize * (y / _regionSize); j < _regionSize * ((y + 1) / _regionSize); j++)
-                    {
-                        if (_fieldValues[i, j] == _fieldValues[x, y] && x != i && y != j)
-                            return false;
-                    }
-
-                return true;
+                if (_fieldValues[i, j] == _fieldValues[x, y] && x != i && y != j)
+                    return false;
             }
+
+            return true;
         }
     }
 }
