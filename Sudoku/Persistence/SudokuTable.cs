@@ -94,12 +94,24 @@ namespace ELTE.Forms.Sudoku.Persistence
             if (y < 0 || y >= _fieldValues.GetLength(1))
                 throw new ArgumentOutOfRangeException("y", "The Y coordinate is out of range.");
 
-            if (_fieldLocks[x, y])
-                return;
+            do
+            {
+                _fieldValues[x, y] = (_fieldValues[x, y] + 1) % (_fieldValues.GetLength(0) + 1);
+            }
+            while (!CheckStep(x, y));
+        }
+
+        public void StepBackValue(int x, int y)
+        {
+            if (x < 0 || x >= _fieldValues.GetLength(0))
+                throw new ArgumentOutOfRangeException("x", "The X coordinate is out of range.");
+            if (y < 0 || y >= _fieldValues.GetLength(1))
+                throw new ArgumentOutOfRangeException("y", "The Y coordinate is out of range.");
 
             do
             {
-                _fieldValues[x, y] = (_fieldValues[x, y] + 1) % (_fieldValues.GetLength(0) + 1); // ciklikus generálás
+                var length = _fieldValues.GetLength(0) + 1;
+                _fieldValues[x, y] = (_fieldValues[x, y] - 1 + length) % length;
             }
             while (!CheckStep(x, y));
         }
@@ -111,7 +123,7 @@ namespace ELTE.Forms.Sudoku.Persistence
             if (y < 0 || y >= _fieldValues.GetLength(1))
                 throw new ArgumentOutOfRangeException("y", "The Y coordinate is out of range.");
 
-            _fieldLocks[x, y] = true;
+            _fieldLocks[x, y] = !_fieldLocks[x, y];
         }
 
         private bool CheckStep(int x, int y)
@@ -127,10 +139,12 @@ namespace ELTE.Forms.Sudoku.Persistence
                 if (_fieldValues[x, j] == _fieldValues[x, y] && y != j)
                     return false;
 
-            for (var i = RegionSize * (x / RegionSize); i < RegionSize * ((x + 1) / RegionSize); i++)
-            for (var j = RegionSize * (y / RegionSize); j < RegionSize * ((y + 1) / RegionSize); j++)
+            for (var i = 0; i < RegionSize; i++)
+            for (var j = 0; j < RegionSize; j++)
             {
-                if (_fieldValues[i, j] == _fieldValues[x, y] && x != i && y != j)
+                var iBlock = x / RegionSize;
+                var jBlock = y / RegionSize;
+                if (_fieldValues[iBlock * RegionSize + i, jBlock * RegionSize + j] == _fieldValues[x, y] && x != iBlock * RegionSize + i && y != jBlock * RegionSize + j)
                     return false;
             }
 

@@ -70,14 +70,58 @@ namespace ELTE.Forms.Sudoku.View
                 MessageBoxIcon.Asterisk);
         }
 
-        private void ButtonGrid_MouseClick(object sender, MouseEventArgs e)
+        private void ButtonGrid_MouseUp(object sender, MouseEventArgs e)
+        {
+            switch (e.Button)
+            {
+                case MouseButtons.Left:
+                    ButtonGrid_LeftMouseClick(sender, e);
+                    return;
+                case MouseButtons.Right:
+                    ButtonGrid_RightMouseClick(sender, e);
+                    return;
+                case MouseButtons.None:
+                    break;
+                case MouseButtons.Middle:
+                    break;
+                case MouseButtons.XButton1:
+                    break;
+                case MouseButtons.XButton2:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        private void ButtonGrid_LeftMouseClick(object sender, MouseEventArgs e)
+        {
+            Step(sender);
+        }
+
+        private void ButtonGrid_RightMouseClick(object sender, MouseEventArgs e)
+        {
+            if (!_model.IsInEditMode)
+            {
+                Step(sender, false);
+                return;
+            }
+
+            var x = (((Button)sender).TabIndex - 100) / _model.Table.Size;
+            var y = (((Button)sender).TabIndex - 100) % _model.Table.Size;
+
+            _model.SetLock(x, y);
+            _buttonGrid[x, y].BackColor = _buttonGrid[x, y].BackColor == Color.White ? Color.Yellow : Color.White;
+        }
+
+        private void Step(object sender, bool direction = true)
         {
             var x = (((Button)sender).TabIndex - 100) / _model.Table.Size;
             var y = (((Button)sender).TabIndex - 100) % _model.Table.Size;
 
-            _model.Step(x, y);
+            _model.Step(x, y, direction);
 
             _buttonGrid[x, y].Text = _model.Table.IsEmpty(x, y) ? string.Empty : _model.Table[x, y].ToString();
+
         }
 
         private void MenuFileNewGame_Click(object sender, EventArgs e)
@@ -157,16 +201,19 @@ namespace ELTE.Forms.Sudoku.View
         private void MenuGameEasy_Click(object sender, EventArgs e)
         {
             _model.GameDifficulty = GameDifficulty.Easy;
+            SetupMenus();
         }
 
         private void MenuGameMedium_Click(object sender, EventArgs e)
         {
             _model.GameDifficulty = GameDifficulty.Medium;
+            SetupMenus();
         }
 
         private void MenuGameHard_Click(object sender, EventArgs e)
         {
             _model.GameDifficulty = GameDifficulty.Hard;
+            SetupMenus();
         }
 
         private void Timer_Tick(object sender, EventArgs e)
@@ -191,7 +238,7 @@ namespace ELTE.Forms.Sudoku.View
                         TabIndex = 100 + i * _model.Table.Size + j,
                         FlatStyle = FlatStyle.Flat
                     };
-                    _buttonGrid[i, j].MouseClick += ButtonGrid_MouseClick;
+                    _buttonGrid[i, j].MouseUp += ButtonGrid_MouseUp;
 
                     Controls.Add(_buttonGrid[i, j]);
                 }
@@ -227,6 +274,33 @@ namespace ELTE.Forms.Sudoku.View
             _menuGameEasy.Checked = (_model.GameDifficulty == GameDifficulty.Easy);
             _menuGameMedium.Checked = (_model.GameDifficulty == GameDifficulty.Medium);
             _menuGameHard.Checked = (_model.GameDifficulty == GameDifficulty.Hard);
+        }
+
+        private void yesEditToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _model.IsInEditMode = true;
+            SetEdit();
+            
+        }
+
+        private void noEditToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _model.IsInEditMode = false;
+            SetEdit();
+        }
+
+        private void SetEdit()
+        {
+            yesEditToolStripMenuItem.Checked = _model.IsInEditMode;
+            noEditToolStripMenuItem.Checked = !_model.IsInEditMode;
+
+            for (var i = 0; i < _buttonGrid.GetLength(0); i++)
+            {
+                for (var j = 0; j < _buttonGrid.GetLength(1); j++)
+                {
+                    _buttonGrid[i, j].Enabled = _model.IsInEditMode || _buttonGrid[i, j].BackColor != Color.Yellow;
+                }
+            }
         }
     }
 }
