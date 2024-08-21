@@ -2,18 +2,12 @@
 
 namespace ELTE.Forms.Sudoku.Persistence
 {
-    /// <summary>
-    /// Sudoku játéktábla típusa.
-    /// </summary>
     public class SudokuTable
     {
-        private int _regionSize; // ház méret
-        private int[,] _fieldValues; // mezőértékek
-        private bool[,] _fieldLocks; // mező zárolások
+        private int _regionSize;
+        private int[,] _fieldValues;
+        private bool[,] _fieldLocks;
 
-        /// <summary>
-        /// Játéktábla kitöltöttségének lekérdezése.
-        /// </summary>
         public bool IsFilled
         {
             get
@@ -25,37 +19,17 @@ namespace ELTE.Forms.Sudoku.Persistence
             }
         }
 
-        /// <summary>
-        /// Házak méretének lekérdezése.
-        /// </summary>
         public int RegionSize
         { get { return _regionSize; } }
 
-        /// <summary>
-        /// Játéktábla méretének lekérdezése.
-        /// </summary>
         public int Size
         { get { return _fieldValues.GetLength(0); } }
 
-        /// <summary>
-        /// Mező értékének lekérdezése.
-        /// </summary>
-        /// <param name="x">Vízszintes koordináta.</param>
-        /// <param name="y">Függőleges koordináta.</param>
-        /// <returns>Mező értéke.</returns>
         public int this[int x, int y]
         { get { return GetValue(x, y); } }
 
-        /// <summary>
-        /// Sudoku játéktábla példányosítása.
-        /// </summary>
         public SudokuTable() : this(9, 3) { }
 
-        /// <summary>
-        /// Sudoku játéktábla példányosítása.
-        /// </summary>
-        /// <param name="tableSize">Játéktábla mérete.</param>
-        /// <param name="regionSize">Ház mérete.</param>
         public SudokuTable(int tableSize, int regionSize)
         {
             if (tableSize < 0)
@@ -72,12 +46,6 @@ namespace ELTE.Forms.Sudoku.Persistence
             _fieldLocks = new bool[tableSize, tableSize];
         }
 
-        /// <summary>
-        /// Mező kitöltetlenségének lekérdezése.
-        /// </summary>
-        /// <param name="x">Vízszintes koordináta.</param>
-        /// <param name="y">Függőleges koordináta.</param>
-        /// <returns>Igaz, ha a mező ki van töltve, egyébként hamis.</returns>
         public bool IsEmpty(int x, int y)
         {
             if (x < 0 || x >= _fieldValues.GetLength(0))
@@ -88,12 +56,6 @@ namespace ELTE.Forms.Sudoku.Persistence
             return _fieldValues[x, y] == 0;
         }
 
-        /// <summary>
-        /// Mező zároltságának lekérdezése.
-        /// </summary>
-        /// <param name="x">Vízszintes koordináta.</param>
-        /// <param name="y">Függőleges koordináta.</param>
-        /// <returns>Igaz, ha a mező zárolva van, különben hamis.</returns>
         public bool IsLocked(int x, int y)
         {
             if (x < 0 || x >= _fieldValues.GetLength(0))
@@ -104,12 +66,6 @@ namespace ELTE.Forms.Sudoku.Persistence
             return _fieldLocks[x, y];
         }
 
-        /// <summary>
-        /// Mező értékének lekérdezése.
-        /// </summary>
-        /// <param name="x">Vízszintes koordináta.</param>
-        /// <param name="y">Függőleges koordináta.</param>
-        /// <returns>A mező értéke.</returns>
         public int GetValue(int x, int y)
         {
             if (x < 0 || x >= _fieldValues.GetLength(0))
@@ -120,13 +76,6 @@ namespace ELTE.Forms.Sudoku.Persistence
             return _fieldValues[x, y];
         }
 
-        /// <summary>
-        /// Mező értékének beállítása.
-        /// </summary>
-        /// <param name="x">Vízszintes koordináta.</param>
-        /// <param name="y">Függőleges koordináta.</param>
-        /// <param name="value">Érték.</param>
-        /// <param name="lockField">Zárolja-e a mezőt.</param>
         public void SetValue(int x, int y, int value, bool lockField)
         {
             if (x < 0 || x >= _fieldValues.GetLength(0))
@@ -135,20 +84,15 @@ namespace ELTE.Forms.Sudoku.Persistence
                 throw new ArgumentOutOfRangeException("y", "The Y coordinate is out of range.");
             if (value < 0 || value > _fieldValues.GetLength(0) + 1)
                 throw new ArgumentOutOfRangeException("value", "The value is out of range.");
-            if (_fieldLocks[x, y]) // ha már zárolva van, nem állíthatjuk be
+            if (_fieldLocks[x, y])
                 return;
-            if (!CheckStep(x, y)) // ha a beállítás érvénytelen, akkor nem végezzük el
+            if (!CheckStep(x, y))
                 return;
 
             _fieldValues[x, y] = value;
             _fieldLocks[x, y] = lockField;
         }
 
-        /// <summary>
-        /// Mező léptetése.
-        /// </summary>
-        /// <param name="x">Vízszintes koordináta.</param>
-        /// <param name="y">Függőleges koordináta.</param>
         public void StepValue(int x, int y)
         {
             if (x < 0 || x >= _fieldValues.GetLength(0))
@@ -156,21 +100,16 @@ namespace ELTE.Forms.Sudoku.Persistence
             if (y < 0 || y >= _fieldValues.GetLength(1))
                 throw new ArgumentOutOfRangeException("y", "The Y coordinate is out of range.");
 
-            if (_fieldLocks[x, y]) // ha már zárolva van, nem állíthatjuk be
+            if (_fieldLocks[x, y])
                 return;
 
             do
             {
                 _fieldValues[x, y] = (_fieldValues[x, y] + 1) % (_fieldValues.GetLength(0) + 1); // ciklikus generálás
             }
-            while (!CheckStep(x, y)); // amíg nem jó az érték
+            while (!CheckStep(x, y));
         }
 
-        /// <summary>
-        /// Mező zárolása.
-        /// </summary>
-        /// <param name="x">Vízszintes koordináta.</param>
-        /// <param name="y">Függőleges koordináta.</param>
         public void SetLock(int x, int y)
         {
             if (x < 0 || x >= _fieldValues.GetLength(0))
@@ -181,29 +120,20 @@ namespace ELTE.Forms.Sudoku.Persistence
             _fieldLocks[x, y] = true;
         }
 
-        /// <summary>
-        /// Lépésellenőrzés.
-        /// </summary>
-        /// <param name="x">Vízszintes koordináta.</param>
-        /// <param name="y">Függőleges koordináta.</param>
-        /// <returns>Igaz, ha a lépés engedélyezett, különben hamis.</returns>
         private bool CheckStep(int x, int y)
         {
             if (_fieldValues[x, y] == 0)
                 return true;
             else
             {
-                // sor ellenőrzése:
                 for (var i = 0; i < _fieldValues.GetLength(0); i++)
                     if (_fieldValues[i, y] == _fieldValues[x, y] && x != i)
                         return false;
 
-                // oszlop ellenőrzése:
                 for (var j = 0; j < _fieldValues.GetLength(1); j++)
                     if (_fieldValues[x, j] == _fieldValues[x, y] && y != j)
                         return false;
 
-                // ház ellenőrzése:
                 for (var i = _regionSize * (x / _regionSize); i < _regionSize * ((x + 1) / _regionSize); i++)
                     for (var j = _regionSize * (y / _regionSize); j < _regionSize * ((y + 1) / _regionSize); j++)
                     {

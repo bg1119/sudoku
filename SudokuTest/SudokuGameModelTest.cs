@@ -7,13 +7,12 @@ namespace ELTE.Forms.Sudoku.Test
     [TestClass]
     public class SudokuGameModelTest
     {
-        private SudokuGameModel _model; // a tesztelendő modell
+        private SudokuGameModel _model;
 
         [TestInitialize]
         public void Initialize()
         {
             _model = new SudokuGameModel(null);
-            // perzisztencia nélküli modellt hozunk létre
 
             _model.GameAdvanced += Model_GameAdvanced;
             _model.GameOver += Model_GameOver;
@@ -24,9 +23,9 @@ namespace ELTE.Forms.Sudoku.Test
         {
             _model.NewGame();
 
-            Assert.AreEqual(0, _model.GameStepCount); // még nem léptünk
-            Assert.AreEqual(GameDifficulty.Medium, _model.GameDifficulty); // a nehézség beállítódott
-            Assert.AreEqual(1200, _model.GameTime); // alapból ennyi időnk van
+            Assert.AreEqual(0, _model.GameStepCount);
+            Assert.AreEqual(GameDifficulty.Medium, _model.GameDifficulty);
+            Assert.AreEqual(1200, _model.GameTime); 
 
             var emptyFields = 0;
             for (var i = 0; i < 9; i++)
@@ -34,7 +33,7 @@ namespace ELTE.Forms.Sudoku.Test
                     if (_model.Table.IsEmpty(i, j))
                         emptyFields++;
 
-            Assert.AreEqual(69, emptyFields); // szabad mezők száma is megfelelő
+            Assert.AreEqual(69, emptyFields);
         }
 
         [TestMethod]
@@ -43,9 +42,9 @@ namespace ELTE.Forms.Sudoku.Test
             _model.GameDifficulty = GameDifficulty.Easy;
             _model.NewGame();
 
-            Assert.AreEqual(0, _model.GameStepCount); // még nem léptünk
-            Assert.AreEqual(GameDifficulty.Easy, _model.GameDifficulty); // a nehézség beállítódott
-            Assert.AreEqual(3600, _model.GameTime); // alapból ennyi időnk van
+            Assert.AreEqual(0, _model.GameStepCount);
+            Assert.AreEqual(GameDifficulty.Easy, _model.GameDifficulty);
+            Assert.AreEqual(3600, _model.GameTime);
 
             var emptyFields = 0;
             for (var i = 0; i < 9; i++)
@@ -53,7 +52,7 @@ namespace ELTE.Forms.Sudoku.Test
                     if (_model.Table.IsEmpty(i, j))
                         emptyFields++;
 
-            Assert.AreEqual(75, emptyFields); // szabad mezők száma is megfelelő
+            Assert.AreEqual(75, emptyFields);
         }
 
         [TestMethod]
